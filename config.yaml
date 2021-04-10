@@ -3,6 +3,7 @@
 txt_filename: "./txt/deal.txt"
 # 종목코드
 jongmok_code: "A122630"
+samsung_code: "A005930"
 # 지갑. 거래 시작 금액
 possesion: 1000000
 # 전일 종가. 파일에 없는 경우
@@ -19,4 +20,4 @@ wait_sec: 0.5
 # 수행시간
 run_hms:
   start_hms: "085959"
-  stop_hms: "122259"
+  stop_hms: "152959"

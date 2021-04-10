@@ -5,11 +5,11 @@ import datetime, yaml, os, time
 import pymysql
 from sqlalchemy import create_engine
 
-pymysql.install_as_MySQLdb()
-import MySQLdb
+# pymysql.install_as_MySQLdb()
+# import MySQLdb
 
-engine = create_engine("mysql+mysqldb://etlers:"+"wndyd"+"@localhost/cybos", encoding='utf-8')
-conn = engine.connect()
+# engine = create_engine("mysql+mysqldb://etlers:"+"wndyd"+"@localhost/cybos", encoding='utf-8')
+# conn = engine.connect()
 
 # current date and time
 now_dtm = datetime.datetime.now()
@@ -23,6 +23,7 @@ with open('config.yaml', encoding='utf-8') as stream:
 txt_filename = deal_info["txt_filename"]
 # 종목코드
 jongmok_code = deal_info["jongmok_code"]
+samsung_code = deal_info["samsung_code"]
 # 최초 지갑
 possesion = deal_info["possesion"]
 # 전일 종가. 파일에 없는 경우
@@ -71,6 +72,24 @@ def set_high_low_price(now_price, low_price, high_price):
             high_price = now_price
     
     return low_price, high_price  
+
+def samsung_price():
+    # 현재가 객체 구하기
+    objStockMst = win32com.client.Dispatch("DsCbo1.StockMst")
+    objStockMst.SetInputValue(0, samsung_code)
+    objStockMst.BlockRequest()
+    
+    # 현재가 통신 및 통신 에러 처리 
+    rqStatus = objStockMst.GetDibStatus()
+    rqRet = objStockMst.GetDibMsg1()
+    #print("통신상태", rqStatus, rqRet)
+    if rqStatus != 0:
+        exit()
+    
+    # 현재가 정보 조회
+    open= objStockMst.GetHeaderValue(13)  # 시가
+
+    return open
 
 # 현재가 추출
 def get_now_price():
@@ -187,12 +206,16 @@ def execute():
         # 시작 전이면 대기 메세지 출력하면서 대기
         if run_hms < start_hms:
             print("Waiting...", run_hms)
+            time.sleep(1)
             continue
         # 시간이 지났으면 종료하러 나감
         if run_hms > stop_hms: break
         # 체결금액 추출
+        samsung = samsung_price()
+        #comp_price = int(samsung * 0.31)
         now_price = get_now_price()
-        print(run_hms_split, now_price)
+        comp_rt = round(round(now_price / samsung, 2) * 100, 2)
+        print(run_hms_split, now_price, samsung, comp_rt)
         # 최고, 최저 가격 설정
         # 마감 15분 전부터 매도인 경우 최고가보다 크면 매도 매수인 경우는 최저가보다 작으면 매수
         #low_price, high_price = set_high_low_price(now_price, low_price, high_price)
@@ -269,6 +292,8 @@ if __name__ == "__main__":
     print(run_dt, profit, deal_amount, str(round(round(profit / possesion, 4) * 100, 2)) + "%", deal_cnt)
     # 디비로 저장
     df_price_info = pd.DataFrame(list_price_info, columns=list_price_info_cols)
-    df_price_info.to_sql(name="price_info", con=engine, if_exists='append', index=False)
+    df_price_info.to_csv("./csv/price_info.csv", index=False)
+    # df_price_info.to_sql(name="price_info", con=engine, if_exists='append', index=False)
     df_deal_history = pd.DataFrame(list_deal_history, columns=list_deal_history_cols)
-    df_deal_history.to_sql(name="deal_history", con=engine, if_exists='append', index=False)
+    df_deal_history.to_csv("./csv/deal_history.csv", index=False)
+    # df_deal_history.to_sql(name="deal_history", con=engine, if_exists='append', index=False)

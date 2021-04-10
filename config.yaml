@@ -1,1 +1,22 @@
 # -*- coding: utf-8 -*-
+# 거래를 이어갈 파일 명칭
+txt_filename: "./txt/deal.txt"
+# 종목코드
+jongmok_code: "A122630"
+# 지갑. 거래 시작 금액
+possesion: 1000000
+# 전일 종가. 파일에 없는 경우
+last_price: 27765
+# 매도 기준이 되는 수익률
+profit_rate: 0.012
+# 매수 기준이 되는 거래 틱 정보
+tick:
+  tick_amount: 5
+  tick_over: 3
+  tick_under: 9
+# 추출 대기초
+wait_sec: 0.5
+# 수행시간
+run_hms:
+  start_hms: "085959"
+  stop_hms: "122259"

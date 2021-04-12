@@ -7,7 +7,7 @@ samsung_code: "A005930"
 # 지갑. 거래 시작 금액
 possesion: 1000000
 # 전일 종가. 파일에 없는 경우
-last_price: 27765
+last_price: 27445
 # 매도 기준이 되는 수익률
 profit_rate: 0.012
 # 매수 기준이 되는 거래 틱 정보
@@ -20,4 +20,5 @@ wait_sec: 0.5
 # 수행시간
 run_hms:
   start_hms: "085959"
-  stop_hms: "152959"
+  #stop_hms: "152959"
+  stop_hms: "205059"

@@ -4,10 +4,12 @@ txt_filename: "./txt/deal.txt"
 # 종목코드
 jongmok_code: "A122630"
 samsung_code: "A005930"
+# 계좌번호
+account_no: "8162124111"
 # 지갑. 거래 시작 금액
-possesion: 1000000
+possesion: 400000
 # 전일 종가. 파일에 없는 경우
-last_price: 27445
+last_price: 28075
 # 매도 기준이 되는 수익률
 profit_rate: 0.012
 # 매수 기준이 되는 거래 틱 정보
@@ -20,5 +22,5 @@ wait_sec: 0.5
 # 수행시간
 run_hms:
   start_hms: "085959"
-  #stop_hms: "152959"
-  stop_hms: "205059"
+  stop_hms: "152959"
+  #stop_hms: "201859"

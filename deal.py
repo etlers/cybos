@@ -2,7 +2,7 @@
 import win32com.client
 import pandas as pd
 import datetime, yaml, os, time
-import pymysql
+#import pymysql
 from sqlalchemy import create_engine
 
 # pymysql.install_as_MySQLdb()
